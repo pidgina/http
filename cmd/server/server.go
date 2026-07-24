@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"fmt"
@@ -49,27 +49,6 @@ func HelloPageHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Ошибка отправки сообщения с приветственной страницы:", err)
 		http.Error(w, "Ошибка отправки сообщения с приветственной страницы", http.StatusInternalServerError)
 		return
-	}
-
-}
-
-func main() {
-
-	mux := http.NewServeMux()
-
-	mux.HandleFunc("GET /time", TimeNowHandler)
-	mux.HandleFunc("GET /time/", TimeNowHandler)
-
-	mux.HandleFunc("GET /home", HomePageHandler)
-	mux.HandleFunc("GET /home/", HomePageHandler)
-
-	mux.HandleFunc("GET /hello", HelloPageHandler)
-	mux.HandleFunc("GET /hello/", HelloPageHandler)
-
-	log.Println("Запуск сервера")
-	err := http.ListenAndServe(":8080", mux)
-	if err != nil {
-		log.Println("Ошибка запуска сервера:", err)
 	}
 
 }

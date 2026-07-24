@@ -1,7 +1,6 @@
-package main
+package client
 
 import (
-	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -84,12 +83,4 @@ func (c *APIClient) GetHello() string {
 		return ""
 	}
 	return string(data)
-}
-
-func main() {
-	client := NewAPIClient("http://localhost:8080")
-	fmt.Println(client.GetTime())
-	fmt.Println(client.GetHome())
-	fmt.Println(client.GetHello())
-
 }
