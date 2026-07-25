@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"proj/cmd/service"
+	"proj/internal/service"
 )
 
 func TimeNowHandler(w http.ResponseWriter, r *http.Request) {
