@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"proj/internal/handlers"
+	"proj/internal/middleware"
 	"syscall"
 	"time"
 )
@@ -28,7 +29,9 @@ func startServerAndMux() {
 	mux.HandleFunc("GET /hello", handlers.HelloPageHandler)
 	mux.HandleFunc("GET /hello/", handlers.HelloPageHandler)
 
-	server := &http.Server{Addr: ":" + port, Handler: mux}
+	res := middleware.Logging(mux)
+
+	server := &http.Server{Addr: ":" + port, Handler: res}
 
 	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
