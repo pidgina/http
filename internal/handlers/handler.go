@@ -34,14 +34,14 @@ func HomePageHandler(w http.ResponseWriter, r *http.Request) {
 
 func HelloPageHandler(w http.ResponseWriter, r *http.Request) {
 	text := fmt.Sprintln(`Рады приветствовать вас на нашем сайте.
-Для перехода на домашнюю страницу со всеми путями используйте:
-/home`)
+	Для перехода на домашнюю страницу со всеми путями используйте:
+	/home`)
 
 	_, err := w.Write([]byte(text))
+
 	if err != nil {
 		log.Println("Ошибка отправки сообщения с приветственной страницы:", err)
 		http.Error(w, "Ошибка отправки сообщения с приветственной страницы", http.StatusInternalServerError)
 		return
 	}
-
 }

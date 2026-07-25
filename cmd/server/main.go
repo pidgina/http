@@ -29,7 +29,7 @@ func startServerAndMux() {
 	mux.HandleFunc("GET /hello", handlers.HelloPageHandler)
 	mux.HandleFunc("GET /hello/", handlers.HelloPageHandler)
 
-	res := middleware.Logging(mux)
+	res := middleware.Logging(middleware.Recovery(mux))
 
 	server := &http.Server{Addr: ":" + port, Handler: res}
 
