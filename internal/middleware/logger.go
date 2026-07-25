@@ -8,7 +8,6 @@ import (
 
 func Logging(next http.Handler) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
 		log.Printf("Начался запрос с методом: %v, URL: %v", r.Method, r.URL.Path)
 		timeNow := time.Now()
 		next.ServeHTTP(w, r)
