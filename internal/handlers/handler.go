@@ -1,26 +1,19 @@
-package server
+package handlers
 
 import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
+	"proj/cmd/service"
 )
 
 func TimeNowHandler(w http.ResponseWriter, r *http.Request) {
-	_, err := w.Write([]byte(TimeNow()))
+	_, err := w.Write([]byte(service.TimeNow()))
 	if err != nil {
 		log.Println("Ошибка отправки времени в ответ на запрос:", err)
 		http.Error(w, "Ошибка отправки времени в ответ на запрос", http.StatusInternalServerError)
 		return
 	}
-}
-
-func TimeNow() string {
-	NowTime := time.Now()
-	layout := "02.01.2006 15:04"
-	time := NowTime.Format(layout)
-	return time
 }
 
 func HomePageHandler(w http.ResponseWriter, r *http.Request) {

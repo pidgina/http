@@ -1,9 +1,10 @@
-package server
+package main
 
 import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"proj/internal/handlers"
 	"testing"
 	"time"
 )
@@ -13,7 +14,7 @@ func TestTimeNow(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	TimeNowHandler(rec, req)
+	handlers.TimeNowHandler(rec, req)
 
 	if req.Method != http.MethodGet {
 		t.Fatalf("method = %v, want %v", req.Method, http.MethodGet)
@@ -42,7 +43,7 @@ func TestHomePage(t *testing.T) {
 		t.Fatalf("method = %v, want %v", req.Method, http.MethodGet)
 	}
 
-	HomePageHandler(rec, req)
+	handlers.HomePageHandler(rec, req)
 
 	if rec.Code != http.StatusOK {
 		t.Fatalf("status = %d, want %d", rec.Code, http.StatusOK)
@@ -69,7 +70,7 @@ func TestHelloPage(t *testing.T) {
 		t.Fatalf("method = %v, want %v", req.Method, http.MethodGet)
 	}
 
-	HelloPageHandler(rec, req)
+	handlers.HelloPageHandler(rec, req)
 
 	if rec.Code != http.StatusOK {
 		t.Fatalf("status = %v, want %v", rec.Code, http.StatusOK)

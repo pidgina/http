@@ -1,9 +1,10 @@
-package client
+package main
 
 import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"proj/internal/api"
 	"testing"
 	"time"
 )
@@ -44,7 +45,7 @@ func TestAPIClient(t *testing.T) {
 	fakeServer := httptest.NewServer(mux)
 	defer fakeServer.Close()
 
-	client := NewAPIClient(fakeServer.URL)
+	client := api.NewAPIClient(fakeServer.URL)
 
 	timeResp := client.GetTime()
 	homeResp := client.GetHome()
