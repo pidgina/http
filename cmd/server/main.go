@@ -1,10 +1,15 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"proj/internal/handlers"
+	"syscall"
+	"time"
 )
 
 func startServerAndMux() {
@@ -23,13 +28,31 @@ func startServerAndMux() {
 	mux.HandleFunc("GET /hello", handlers.HelloPageHandler)
 	mux.HandleFunc("GET /hello/", handlers.HelloPageHandler)
 
-	log.Println("Запуск сервера")
-	err := http.ListenAndServe(":"+port, mux)
-	if err != nil {
-		log.Println("Ошибка запуска сервера:", err)
+	server := &http.Server{Addr: ":" + port, Handler: mux}
+
+	go func() {
+		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Ошибка сервера: %v", err)
+		}
+	}()
+
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh, os.Interrupt, syscall.SIGTERM)
+	<-sigCh
+
+	fmt.Println("Получен сигнал завершения, останавливаем сервер...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	if err := server.Shutdown(ctx); err != nil {
+		log.Fatalf("Ошибка при остановке сервера: %v", err)
 	}
+
+	fmt.Println("Сервер остановлен корректно")
 }
 
 func main() {
+	fmt.Println("Запускаем сервер.")
 	startServerAndMux()
 }
